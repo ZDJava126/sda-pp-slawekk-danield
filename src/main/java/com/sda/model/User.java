@@ -2,16 +2,17 @@ package com.sda.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     private String username;
@@ -21,14 +22,16 @@ public class User {
     private int age;
     private String email;
 
-    public User() {}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email);
+    }
 
-    public User(String username, String password, String name, String surname, int age, String email) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-        this.email = email;
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, name, surname, age, email);
     }
 }
